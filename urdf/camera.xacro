@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+
+<robot
+  name="turtlebot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- RGBD Camera -->
+  <gazebo reference="camera_rgb_frame">
+    <sensor type="depth" name="realsense_R200">
+      <update_rate>30.0</update_rate>
+      <camera>
+        <horizontal_fov>1.3439</horizontal_fov>
+        <image>
+          <width>1920</width>
+          <height>1080</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.03</near>
+          <far>100</far>
+        </clip>
+      </camera>
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <updateRate>30.0</updateRate>
+        <cameraName>camera</cameraName>
+        <imageTopicName>rgb/image_raw</imageTopicName>
+        <depthImageTopicName>depth/image_raw</depthImageTopicName>
+        <pointCloudTopicName>depth/points</pointCloudTopicName>
+        <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+        <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+        <frameName>camera_rgb_optical_frame</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+</robot>

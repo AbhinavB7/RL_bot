@@ -1,0 +1,20 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/abhi/690_ws/install/drone_rl/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/drone_control/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/sjtu_drone_control/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/sjtu_drone_bringup/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/rl_bot/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/abhi/690_ws/install/drone_rl/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/drone_control/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/sjtu_drone_control/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/sjtu_drone_bringup/lib/python3.10/site-packages",
+        "/home/abhi/690_ws/install/rl_bot/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

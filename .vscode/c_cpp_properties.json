@@ -1,0 +1,24 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/abhi/690_ws/install/sjtu_drone_description/include/**",
+        "/home/abhi/690_ws/install/my_bot/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/abhi/690_ws/src/Search_and_Rescue_Drone_using_Reinforcement_Learning/sjtu_drone_description/include/**",
+        "/home/abhi/690_ws/src/my_bot/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
