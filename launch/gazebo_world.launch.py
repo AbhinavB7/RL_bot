@@ -33,7 +33,7 @@ def generate_launch_description():
     #                    arguments=['-entity', 'demo', 'x', 'y', 'z'],
     #                    output='screen')
     spawn_entity = Node(package='rl_bot', executable='spawn_demo',
-                        arguments=['Turtlebot', 'demo', '1', '16.0', '0.0'],
+                        arguments=['turtlebot', 'demo', '1', '16.0', '0.0'],
                         output='screen')
 
     return LaunchDescription([

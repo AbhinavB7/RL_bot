@@ -24,8 +24,8 @@ setup(
         # Path to the launch file      
         (os.path.join('share', package_name,'launch'), glob('launch/*.launch.py')),
 
-        # # Path to the config file
-        # (os.path.join('share', package_name,'config'), glob('config/*.yaml')),
+        # Path to the config file
+        (os.path.join('share', package_name,'config'), glob('config/*.yaml')),
 
         # Path to the world file
         (os.path.join('share', package_name,'worlds/'), glob('./worlds/*')),
@@ -67,7 +67,7 @@ setup(
     entry_points={
         'console_scripts': [
           'spawn_demo = rl_bot.spawn_demo:main',
-        #   'start_training = hospital_robot_spawner.start_training:main',
+          'start_training = rl_bot.start_training:main',
         #   'trained_agent = hospital_robot_spawner.trained_agent:main',
         ],
     },

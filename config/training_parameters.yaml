@@ -1,0 +1,3 @@
+rl_bot:
+  ros__parameters:
+    test: 1
