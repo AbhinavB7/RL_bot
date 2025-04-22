@@ -60,7 +60,7 @@ class BotEnv(RobotController, Env):
         # 6: short-range targets evaluation mode (similar to max randomization but with new locations)
         # 6.5: long-range targets evaluation mode
         # 7: path planning evaluation mode (the robot has to reach several targets to complete the path)
-        self._randomize_env_level = 7
+        self._randomize_env_level = 3
         # If True, the observation space is normalized between [0,1] (except distance which is between [0,6], see below)
         self._normalize_obs = True
         # If True, the action space is normalized between [-1,1]

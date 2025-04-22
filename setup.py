@@ -68,7 +68,7 @@ setup(
         'console_scripts': [
           'spawn_demo = rl_bot.spawn_demo:main',
           'start_training = rl_bot.start_training:main',
-        #   'trained_agent = hospital_robot_spawner.trained_agent:main',
+          'trained_agent = rl_bot.trained_agent:main',
         ],
     },
 )
