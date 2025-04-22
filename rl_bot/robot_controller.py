@@ -74,11 +74,11 @@ class RobotController(Node):
 
     # Method that saves the laser reads each time the topic /demo/laser/out receives a new message
     def laser_callback(self, msg: LaserScan):
-        # self._laser_reads = np.array(msg.ranges)
-        laser_full = np.array(msg.ranges)
-        laser_full[laser_full == np.inf] = 10.0
-        # Downsample to 61 evenly spaced values
-        self._laser_reads = laser_full[np.linspace(0, len(laser_full) - 1, 61, dtype=int)]
+        self._laser_reads = np.array(msg.ranges)
+        # laser_full = np.array(msg.ranges)
+        # laser_full[laser_full == np.inf] = 10.0
+        # # Downsample to 61 evenly spaced values
+        # self._laser_reads = laser_full[np.linspace(0, len(laser_full) - 1, 61, dtype=int)]
 
         # Converts inf values to 10
         self._laser_reads[self._laser_reads == np.inf] = np.float32(10)
