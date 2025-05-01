@@ -69,6 +69,7 @@ setup(
           'spawn_demo = rl_bot.spawn_demo:main',
           'start_training = rl_bot.start_training:main',
           'trained_agent = rl_bot.trained_agent:main',
+          'start_training_SAC = rl_bot.start_training_SAC:main',
         ],
     },
 )

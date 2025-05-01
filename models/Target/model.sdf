@@ -10,12 +10,12 @@
       <visual name='visual'>
         <geometry>
           <sphere>
-          <radius>0.2</radius>
+          <radius>0.1</radius>
           </sphere>
         </geometry>
         <material>
-          <diffuse>1 0 0 1</diffuse>
-          <ambient>1 0 0 1</ambient>
+          <diffuse>1 1 0 1</diffuse>
+          <ambient>1 1 0 1</ambient>
         </material>
       </visual>
     </link>

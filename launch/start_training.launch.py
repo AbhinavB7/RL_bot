@@ -15,7 +15,7 @@ def generate_launch_description():
 
     start_training = Node(
         package='rl_bot',
-        executable='start_training',
+        executable='start_training_SAC',
         parameters=[training_parameters]
     )
 

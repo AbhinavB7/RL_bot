@@ -22,16 +22,13 @@ def main(args=None):
     node = TrainedAgent()
     node.get_logger().info("Trained agent node has been created")
 
-    # We get the dir where the models are saved
     home_dir = os.path.expanduser('~')
     pkg_dir = '690_ws/src/rl_bot'
-    trained_model_path = os.path.join(home_dir, pkg_dir, 'rl_models', 'PPO_test.zip')
+    trained_model_path = os.path.join(home_dir, pkg_dir, 'rl_models', 'PPO_risk_seeker.zip')
 
-    # Register the gym environment
     register(
         id="botEnv-v0",
         entry_point="rl_bot.bot_env:BotEnv",
-        #entry_point="rl_bot.bot_simplified_env:botSimpleEnv",
         max_episode_steps=3000,
     )
 
@@ -42,23 +39,16 @@ def main(args=None):
 
     episodes = 10
 
-    # This is done to bypass the problem between using two different distros of ROS (humble and foxy)
-    # They use different python versions, for this reason the action and observation space cannot be deserialized from the trained model
-    # The solution is passing them as custom_objects, so that they won't be loaded from the model
     custom_obj = {'action_space': env.action_space, 'observation_space': env.observation_space}
 
-    # Here we load the rained model
     model = PPO.load(trained_model_path, env=env, custom_objects=custom_obj)
 
-    # Evaluating the trained agent
-    Mean_ep_rew, Num_steps = evaluate_policy(model, env=env, n_eval_episodes=100, return_episode_rewards=True, deterministic=True)
+    Mean_ep_rew, Num_steps = evaluate_policy(model, env=env, n_eval_episodes=5, return_episode_rewards=True, deterministic=True)
 
-    # Print harvested data
     node.get_logger().info("Mean Reward: " + str(np.mean(Mean_ep_rew)) + " - Std Reward: " + str(np.std(Mean_ep_rew)))
     node.get_logger().info("Max Reward: " + str(np.max(Mean_ep_rew)) + " - Min Reward: " + str(np.min(Mean_ep_rew)))
     node.get_logger().info("Mean episode length: " + str(np.mean(Num_steps)))
 
-    # Close env to print harvested info and destroy the bot node
     env.close()
 
     node.get_logger().info("The script is completed, now the node is destroyed")
