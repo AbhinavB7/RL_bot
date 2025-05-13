@@ -5,7 +5,7 @@ from rclpy.node import Node
 from gymnasium.envs.registration import register
 from rl_bot.bot_env import BotEnv
 import gymnasium as gym
-from stable_baselines3 import PPO
+from stable_baselines3 import SAC  # CHANGED
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.env_checker import check_env
@@ -24,12 +24,12 @@ def main(args=None):
 
     home_dir = os.path.expanduser('~')
     pkg_dir = '690_ws/src/rl_bot'
-    trained_model_path = os.path.join(home_dir, pkg_dir, 'rl_models', 'PPO_test_best.zip')
+    trained_model_path = os.path.join(home_dir, pkg_dir, 'rl_models', 'SAC_test_100k.zip')  
 
     register(
         id="botEnv-v0",
         entry_point="rl_bot.bot_env:BotEnv",
-        max_episode_steps=3000,
+        max_episode_steps=300,  
     )
 
     env = gym.make('botEnv-v0')
@@ -37,13 +37,17 @@ def main(args=None):
 
     check_env(env)
 
-    episodes = 10
-
     custom_obj = {'action_space': env.action_space, 'observation_space': env.observation_space}
 
-    model = PPO.load(trained_model_path, env=env, custom_objects=custom_obj)
+    model = SAC.load(trained_model_path, env=env, custom_objects=custom_obj)  
 
-    Mean_ep_rew, Num_steps = evaluate_policy(model, env=env, n_eval_episodes=5, return_episode_rewards=True, deterministic=True)
+    Mean_ep_rew, Num_steps = evaluate_policy(
+        model,
+        env=env,
+        n_eval_episodes=5,
+        return_episode_rewards=True,
+        deterministic=True 
+    )
 
     node.get_logger().info("Mean Reward: " + str(np.mean(Mean_ep_rew)) + " - Std Reward: " + str(np.std(Mean_ep_rew)))
     node.get_logger().info("Max Reward: " + str(np.max(Mean_ep_rew)) + " - Min Reward: " + str(np.min(Mean_ep_rew)))

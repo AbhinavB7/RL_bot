@@ -14,7 +14,6 @@ class BotEnv(RobotController, Env):
         super().__init__()
         self.get_logger().info("All the publishers/subscribers have been started")
 
-        # ✅ WAIT FOR /demo/set_entity_state service before continuing
         self.get_logger().info("Waiting for /demo/set_entity_state service to become available...")
         if not self.client_state.wait_for_service(timeout_sec=10.0):
             self.get_logger().error("/demo/set_entity_state service not available after 10 seconds.")
@@ -48,19 +47,6 @@ class BotEnv(RobotController, Env):
         self._num_steps = 0
 
         self._num_episodes = 0
-
-        # Debug prints on console
-        self.get_logger().info("INITIAL TARGET LOCATION: " + str(self._target_location))
-        self.get_logger().info("INITIAL AGENT LOCATION: " + str(self._initial_agent_location))
-        self.get_logger().info("MAX LINEAR VEL: " + str(self._max_linear_velocity))
-        self.get_logger().info("MIN LINEAR VEL: " + str(self._min_linear_velocity))
-        self.get_logger().info("ANGULAR VEL: " + str(self._angular_velocity))
-        self.get_logger().info("MIN TARGET DIST: " + str(self._minimum_dist_from_target))
-        self.get_logger().info("MIN OBSTACLE DIST: " + str(self._minimum_dist_from_obstacles))
-
-        # Warning for training
-        if self._visualize_target == True:
-            self.get_logger().info("WARNING! TARGET VISUALIZATION IS ACTIVATED, SET IT FALSE FOR TRAINING")
 
         if self._normalize_act == True:
             self.action_space = Box(low=np.array([-1, -1]), high=np.array([1, 1]), dtype=np.float32)
@@ -152,11 +138,9 @@ class BotEnv(RobotController, Env):
         # Normalize observations
         if self._normalize_obs == True:
             obs = self.normalize_observation(obs)
-        #self.get_logger().info("Agent Location: " + str(self._agent_location))
         return obs
 
     def _get_info(self):
-        # returns the distance from agent to target and laser reads
         return {
             "distance": math.dist(self._agent_location, self._target_location),
             "laser": self._laser_reads,
@@ -164,7 +148,6 @@ class BotEnv(RobotController, Env):
         }
 
     def spin(self):
-        # This function spins the node until it gets new sensor data (executes both laser and odom callbacks)
         self._done_pose = False
         self._done_laser = False
         while (self._done_pose == False) or (self._done_laser == False):
@@ -204,7 +187,6 @@ class BotEnv(RobotController, Env):
             orientation_w = float(math.cos(angle/2))
 
         if (self._randomize_env_level == 1) or (self._randomize_env_level == 3):
-            # This method randomizes robot's initial position in a simple way
             position_x = float(1) + float(np.random.rand(1)*2-1) # Random contribution [-1,1]
             position_y = float(16) + float(np.random.rand(1) - 0.5) # Random contribution [-0.5,0.5]
             angle = float(math.radians(-90) + math.radians(np.random.rand(1)*60-30))
@@ -229,9 +211,7 @@ class BotEnv(RobotController, Env):
     def normalize_observation(self, observation):
 
         observation["agent"][0] = observation["agent"][0]/10
-        # Angle from target can range from -pi to pi
         observation["agent"][1] = (observation["agent"][1] + math.pi)/(2*math.pi)
-        # Laser reads range from 0 to 10
         observation["laser"] = observation["laser"]/10
 
 
@@ -241,20 +221,16 @@ class BotEnv(RobotController, Env):
     def denormalize_action(self, norm_act):
 
         action_linear = ((self._max_linear_velocity*(norm_act[0]+1)) + (self._min_linear_velocity*(1-norm_act[0])))/2
-        # Angular velicity is symmetric
         action_angular = ((self._angular_velocity*(norm_act[1]+1)) + (-self._angular_velocity*(1-norm_act[1])))/2
 
         return np.array([action_linear, action_angular], dtype=np.float32)
 
     def compute_statistics(self, info):
         if (info["distance"] < self._minimum_dist_from_target):
-                # If the agent reached the target it gets a positive reward
                 self._successes += 1
                 if (self._which_waypoint == len(self.waypoints_locations[0])-1):
                     self._completed_paths += 1
-                #self.get_logger().info("Agent: X = " + str(self._agent_location[0]) + " - Y = " + str(self._agent_location[1]))
         elif (any(info["laser"] < self._minimum_dist_from_obstacles)):
-                # If the agent hits an abstacle it gets a negative reward
                 self._failures += 1
         else:
             pass

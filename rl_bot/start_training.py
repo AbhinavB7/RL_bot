@@ -64,7 +64,6 @@ def main(args=None):
                 node.get_logger().info("Reward at step " + ": " + str(reward))
     
     elif node._training_mode == "training":
-        ## Train the model
         model = PPO("MultiInputPolicy", env, verbose=1, tensorboard_log=log_dir, n_steps=2048, gamma=0.9880614935504514, gae_lambda=0.9435887928788405, ent_coef=0.00009689939917928778, vf_coef=0.6330533453055319, learning_rate=0.00011770118633714448, clip_range=0.1482)
 
         try:
@@ -80,7 +79,6 @@ def main(args=None):
     rclpy.shutdown()
 
 def optimize_ppo(trial):
-    ## This method defines the range of hyperparams to search fo the best tuning
     return {
         'n_steps': trial.suggest_int('n_steps', 2048, 8192), # Default: 2048
         'gamma': trial.suggest_loguniform('gamma', 0.8, 0.9999), # Default: 0.99
@@ -92,7 +90,6 @@ def optimize_ppo(trial):
     }
 
 def optimize_ppo_refinement(trial):
-    ## This method defines a smaller range of hyperparams to search fo the best tuning
     return {
         'n_steps': trial.suggest_int('n_steps', 2048, 14336), # Default: 2048
         'gamma': trial.suggest_loguniform('gamma', 0.96, 0.9999), # Default: 0.99
@@ -104,7 +101,6 @@ def optimize_ppo_refinement(trial):
     }
 
 def optimize_agent(trial):
-    ## This method is used to optimize the hyperparams for our problem
     try:
         # Create environment
         env_opt = gym.make('BotEnv-v0')
@@ -114,15 +110,11 @@ def optimize_agent(trial):
         LOG_DIR = os.path.join(HOME_DIR, PKG_DIR, 'logs')
         SAVE_PATH = os.path.join(HOME_DIR, PKG_DIR, 'tuning', 'trial_{}'.format(trial.number))
         
-        # Setup the parameters
-        #model_params = optimize_ppo(trial)
+
         model_params = optimize_ppo_refinement(trial)
-        # Setup the model
         model = PPO("MultiInputPolicy", env_opt, tensorboard_log=LOG_DIR, verbose=0, **model_params)
         model.learn(total_timesteps=150000)
-        # Evaluate the model
         mean_reward, _ = evaluate_policy(model, env_opt, n_eval_episodes=20)
-        # Close env and delete
         env_opt.close()
         del env_opt
 
